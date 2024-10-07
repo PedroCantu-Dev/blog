@@ -17,7 +17,9 @@ class ImageFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            //true concatena el nombre del archivo
+            //false faker solo almacenara con el nombre del archivo
+            'url' => 'post/' . $this->faker->image('public/storage/post', 640, 480, null, false)
         ];
     }
 }
