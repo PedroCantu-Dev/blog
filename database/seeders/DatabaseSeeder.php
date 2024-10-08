@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         Storage::disk('public')->makeDirectory('post');
 
         $this->call(UserSeeder::class);
-        Category::factory(4)->create();
+        Category::factory(8)->create();
         Tag::factory(12)->create();
         $this->call(PostSeeder::class);
 
