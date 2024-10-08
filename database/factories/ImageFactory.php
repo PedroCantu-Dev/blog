@@ -16,10 +16,33 @@ class ImageFactory extends Factory
      */
     public function definition(): array
     {
+        $maxRetries = 5; // Maximum number of attempts to create the image
+        $imageFileName = null;
+        $attempt = 0;
+
+        // Retry loop to generate the image file name
+        while (empty($imageFileName) && $attempt < $maxRetries) {
+            $imageFileName = $this->faker->image('public/storage/post', 640, 480, null, false);
+            $attempt++;
+
+            // Log a message if the attempt failed
+            if (empty($imageFileName)) {
+                \Log::warning("Attempt $attempt: Failed to generate image file.");
+            }
+        }
+
+        // If we exhausted all retries and still couldn't create the image
+        if (empty($imageFileName)) {
+            throw new \Exception('Failed to generate image file after multiple attempts.');
+        }
+
+        $imageUrl = 'post/' . $imageFileName;
+
+        // Optionally, log a success message when the image is successfully created
+        \Log::info("Image generated successfully: $imageUrl");
+
         return [
-            //true concatena el nombre del archivo
-            //false faker solo almacenara con el nombre del archivo
-            'url' => 'post/' . $this->faker->image('public/storage/post', 640, 480, null, false)
+            'url' => $imageUrl,
         ];
     }
 }

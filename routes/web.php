@@ -2,9 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//use PostController;
+use App\Http\Controllers\PostController;
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [PostController::class, 'index'])->name('posts.index');
 
 Route::middleware([
     'auth:sanctum',
